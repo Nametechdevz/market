@@ -11,11 +11,12 @@ require __DIR__ . '/../config/database.php';
 
 use App\Core\Router;
 use App\Core\Auth;
-use App\Controllers\AuthController;
+
+session_start();
 
 $router = new Router();
 
-// Rutas públicas
+// ==================== Rutas Públicas ====================
 $router->get('/', function() {
     require __DIR__ . '/../app/views/home.php';
 });
@@ -28,41 +29,55 @@ $router->post('/login', 'AuthController@login');
 
 $router->get('/logout', 'AuthController@logout');
 
-// Rutas protegidas (requieren login)
-$router->get('/dashboard', function() {
-    if (!Auth::check()) {
-        Auth::redirect('/login');
-    }
-    $role = Auth::role();
-    if ($role === 'admin') {
-        Auth::redirect('/admin/dashboard');
-    } elseif ($role === 'seller') {
-        Auth::redirect('/seller/dashboard');
-    } else {
-        Auth::redirect('/marketplace');
-    }
-});
-
 $router->get('/marketplace', function() {
     require __DIR__ . '/../app/views/marketplace/index.php';
 });
 
-// Rutas del vendedor (próximamente)
+// ==================== Dashboard Redirect ====================
+$router->get('/dashboard', function() {
+    if (!Auth::check()) Auth::redirect('/login');
+    $role = Auth::role();
+    if ($role === 'admin') Auth::redirect('/admin/dashboard');
+    elseif ($role === 'seller') Auth::redirect('/seller/dashboard');
+    else Auth::redirect('/marketplace');
+});
+
+// ==================== Rutas Admin ====================
+$router->get('/admin/dashboard', 'AdminController@dashboard');
+
+// Usuarios
+$router->get('/admin/users', 'AdminController@users');
+$router->post('/admin/users/toggle-status', 'AdminController@toggleUserStatus');
+
+// Planes
+$router->get('/admin/plans', 'AdminController@plans');
+$router->get('/admin/plans/create', 'AdminController@createPlan');
+$router->post('/admin/plans/create', 'AdminController@createPlan');
+$router->get('/admin/plans/{id}/edit', 'AdminController@editPlan');
+$router->post('/admin/plans/{id}/edit', 'AdminController@editPlan');
+$router->post('/admin/plans/{id}/delete', 'AdminController@deletePlan');
+
+// Categorías
+$router->get('/admin/categories', 'AdminController@categories');
+$router->get('/admin/categories/create', 'AdminController@createCategory');
+$router->post('/admin/categories/create', 'AdminController@createCategory');
+$router->get('/admin/categories/{id}/edit', 'AdminController@editCategory');
+$router->post('/admin/categories/{id}/edit', 'AdminController@editCategory');
+$router->post('/admin/categories/{id}/delete', 'AdminController@deleteCategory');
+
+// Suscripciones
+$router->get('/admin/subscriptions', 'AdminController@subscriptions');
+$router->get('/admin/subscriptions/assign', 'AdminController@assignSubscription');
+$router->post('/admin/subscriptions/assign', 'AdminController@assignSubscription');
+$router->post('/admin/subscriptions/{id}/cancel', 'AdminController@cancelSubscription');
+
+// ==================== Rutas Seller ====================
 $router->get('/seller/dashboard', function() {
     if (!Auth::hasRole('seller')) {
         http_response_code(403);
         exit('Acceso denegado');
     }
     require __DIR__ . '/../app/views/seller/dashboard.php';
-});
-
-// Rutas del admin (próximamente)
-$router->get('/admin/dashboard', function() {
-    if (!Auth::hasRole('admin')) {
-        http_response_code(403);
-        exit('Acceso denegado');
-    }
-    require __DIR__ . '/../app/views/admin/dashboard.php';
 });
 
 // Dispatch
