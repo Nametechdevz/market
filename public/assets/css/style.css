@@ -729,6 +729,58 @@ code {
     font-size: 0.85rem;
 }
 
+/* ==================== Seller Components ==================== */
+
+.subscription-banner {
+    margin-bottom: 2rem;
+}
+
+.subscription-card {
+    background: white;
+    border-left: 4px solid var(--primary);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.subscription-card.free {
+    border-left-color: #d1d5db;
+}
+
+.subscription-card h3 {
+    margin-top: 0;
+    color: var(--primary);
+}
+
+.subscription-valid {
+    color: #6b7280;
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+}
+
+.warning-banner {
+    background: #fee2e2;
+    border-left: 4px solid var(--danger);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    margin-bottom: 2rem;
+}
+
+.warning-banner h3 {
+    margin-top: 0;
+    color: var(--danger);
+}
+
+.warning-banner p {
+    color: #991b1b;
+    margin: 0.5rem 0;
+}
+
+.btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .form-row {

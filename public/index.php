@@ -72,13 +72,34 @@ $router->post('/admin/subscriptions/assign', 'AdminController@assignSubscription
 $router->post('/admin/subscriptions/{id}/cancel', 'AdminController@cancelSubscription');
 
 // ==================== Rutas Seller ====================
-$router->get('/seller/dashboard', function() {
-    if (!Auth::hasRole('seller')) {
-        http_response_code(403);
-        exit('Acceso denegado');
-    }
-    require __DIR__ . '/../app/views/seller/dashboard.php';
-});
+$router->get('/seller/dashboard', 'SellerController@dashboard');
+
+// Productos
+$router->get('/seller/products', 'SellerController@products');
+$router->get('/seller/products/create', 'SellerController@createProduct');
+$router->post('/seller/products/create', 'SellerController@createProduct');
+$router->get('/seller/products/{id}/edit', 'SellerController@editProduct');
+$router->post('/seller/products/{id}/edit', 'SellerController@editProduct');
+$router->post('/seller/products/{id}/delete', 'SellerController@deleteProduct');
+$router->post('/seller/products/{id}/toggle-featured', 'SellerController@toggleFeatured');
+
+// Métodos de Pago
+$router->get('/seller/payment-methods', 'SellerController@paymentMethods');
+$router->get('/seller/payment-methods/create', 'SellerController@createPaymentMethod');
+$router->post('/seller/payment-methods/create', 'SellerController@createPaymentMethod');
+$router->get('/seller/payment-methods/{id}/edit', 'SellerController@editPaymentMethod');
+$router->post('/seller/payment-methods/{id}/edit', 'SellerController@editPaymentMethod');
+$router->post('/seller/payment-methods/{id}/delete', 'SellerController@deletePaymentMethod');
+$router->post('/seller/payment-methods/{id}/set-primary', 'SellerController@setPrimaryPaymentMethod');
+
+// Órdenes
+$router->get('/seller/orders', 'SellerController@orders');
+$router->get('/seller/orders/{id}', 'SellerController@viewOrder');
+$router->post('/seller/orders/{id}/update', 'SellerController@updateOrderStatus');
+
+// Planes
+$router->get('/seller/upgrade-plan', 'SellerController@upgradePlan');
+$router->post('/seller/buy-plan', 'SellerController@buyPlan');
 
 // Dispatch
 $router->dispatch();
