@@ -29,9 +29,26 @@ $router->post('/login', 'AuthController@login');
 
 $router->get('/logout', 'AuthController@logout');
 
-$router->get('/marketplace', function() {
-    require __DIR__ . '/../app/views/marketplace/index.php';
-});
+// ==================== Rutas Marketplace ====================
+$router->get('/marketplace', 'BuyerController@marketplace');
+$router->get('/product/{id}', 'BuyerController@productDetail');
+
+// Carrito
+$router->get('/cart', 'BuyerController@viewCart');
+$router->post('/add-to-cart/{productId}', 'BuyerController@addToCart');
+$router->get('/remove-from-cart/{productId}', 'BuyerController@removeFromCart');
+$router->post('/update-cart', 'BuyerController@updateCart');
+
+// Checkout
+$router->get('/checkout', 'BuyerController@checkout');
+$router->post('/process-payment', 'BuyerController@processPayment');
+
+// Buyer Dashboard
+$router->get('/buyer/purchases', 'BuyerController@myPurchases');
+$router->get('/buyer/reviews', 'BuyerController@myReviews');
+$router->get('/buyer/order/{id}', 'BuyerController@orderDetail');
+$router->post('/buyer/order/{id}/review', 'BuyerController@submitReview');
+$router->post('/buyer/order/{id}/message', 'BuyerController@sendMessage');
 
 // ==================== Dashboard Redirect ====================
 $router->get('/dashboard', function() {
@@ -100,6 +117,19 @@ $router->post('/seller/orders/{id}/update', 'SellerController@updateOrderStatus'
 // Planes
 $router->get('/seller/upgrade-plan', 'SellerController@upgradePlan');
 $router->post('/seller/buy-plan', 'SellerController@buyPlan');
+
+// ==================== Páginas Estáticas ====================
+$router->get('/terms', function() {
+    require __DIR__ . '/../app/views/pages/terms.php';
+});
+
+$router->get('/privacy', function() {
+    require __DIR__ . '/../app/views/pages/privacy.php';
+});
+
+$router->get('/contact', function() {
+    require __DIR__ . '/../app/views/pages/contact.php';
+});
 
 // Dispatch
 $router->dispatch();
