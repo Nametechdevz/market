@@ -1,0 +1,22 @@
+<?php
+/**
+ * Copiar como config.php y ajustar credenciales.
+ * config.php está en .gitignore: nunca se commitea con datos reales.
+ */
+
+return [
+    'db' => [
+        'driver' => 'mysql',
+        'host' => 'localhost',
+        'port' => 3306,
+        'name' => 'iptv_panel',
+        'user' => 'root',
+        'pass' => '',
+    ],
+    'app' => [
+        'url' => 'http://localhost/iptv-backend/public',
+        'env' => 'development',
+    ],
+    'session_timeout' => 3600,
+    'api_token_ttl_days' => 30,
+];

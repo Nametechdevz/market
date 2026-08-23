@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Muchos servidores Xtream Codes solo exponen HTTP plano.
+    Se permite tráfico sin cifrar globalmente; para producción,
+    restringe cleartextTrafficPermitted a los dominios de tus servidores.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>
